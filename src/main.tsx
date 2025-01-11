@@ -1,10 +1,11 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import Home from './Home.tsx'
-import Detail from './Detail.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import Home from "./Home.tsx";
+import Detail from "./Detail.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import { Provider } from "react-redux";
+import todoStore from "./todoSore.ts";
 
 const router = createBrowserRouter([
   {
@@ -17,8 +18,10 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-   <RouterProvider router={router}/>
-  </StrictMode>,
-)
+    <Provider store={todoStore}>
+      <RouterProvider router={router} />
+    </Provider>
+  </StrictMode>
+);
