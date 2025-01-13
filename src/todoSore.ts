@@ -5,13 +5,13 @@ type ToDo = { id: string; todoTitle: string };
 type ToDos = ToDo[];
 type Action = { type: string; text: string; id: string  };
 
-export const addTodo = (text: string) => {
+ const addTodo = (text: string) => {
   return {
     type: "ADD_TODO",
     text,
   };
 };
-export const deleteTodo = (id: string) => {
+ const deleteTodo = (id: string) => {
   return {
     type: "DELETE_TODO",
     id,
@@ -36,4 +36,8 @@ const reducer = (state: ToDos = [], action: Action) => {
 
 const todoStore = createStore(reducer);
 
+export const actionCreators = {
+  addTodo,
+  deleteTodo,
+};
 export default todoStore;
