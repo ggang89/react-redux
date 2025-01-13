@@ -1,27 +1,28 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+//import { v4 as uuidv4 } from 'uuid';
 import { connect } from "react-redux";
 import "./App.css";
 import { actionCreators } from "./todoSore";
+import ToDo from "./ToDo";
 
 type Todo = {
   id: string;
   todoTitle: string;
-}
- 
-function Home({toDos,addToDo}) {
+};
+
+function Home({ toDos, addToDo }) {
   const [text, setText] = useState("");
-  const [todos, setTodos] = useState<Todo[]>([]);
+  //const [todos, setTodos] = useState<Todo[]>([]);
   const handleText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const todo: Todo = { id: uuidv4(), todoTitle: text };
-    setTodos([todo, ...todos]);
+    //const todo: Todo = { id: uuidv4(), todoTitle: text };
+    //setTodos([todo, ...todos]);
     setText("");
     addToDo(text);
-  }; 
+  };
 
   return (
     <>
@@ -35,9 +36,11 @@ function Home({toDos,addToDo}) {
         />
         <button type="submit">추가</button>
       </form>
-      <ul>{todos.map((todo) => (
-        todo.todoTitle
-      ))}</ul>
+      <ul>
+        {toDos.map((toDo: Todo) => (
+          <ToDo key={toDo.id}{...toDo} />
+        ))}
+      </ul>
     </>
   );
 }
@@ -49,12 +52,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     // 내가 만든 함수를 Home 컴포넌트의 props로 전달
-    addToDo:(text:string)=>dispatch(actionCreators.addTodo(text))
+    addToDo: (text: string) => dispatch(actionCreators.addTodo(text)),
   };
 }
-
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
