@@ -1,5 +1,5 @@
-import { createStore } from "redux";
-import { createAction, createReducer } from "@reduxjs/toolkit";
+//import { createStore } from "redux";
+import { configureStore,  createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import ToDo from "./ToDo";
 
@@ -21,8 +21,8 @@ type Action = { type: string; payload: string };
 // };
 
 // 자동으로 type과 payload를 반환하는 함수를 만들어줌
-const addTodo = createAction("ADD");
-const deleteTodo = createAction("DELETE");
+// const addTodo = createAction("ADD");
+// const deleteTodo = createAction("DELETE");
 
 //console.log( addTodo());  //  {type:'ADD',payload:'undefined'}
 
@@ -44,21 +44,37 @@ const deleteTodo = createAction("DELETE");
 // };
 
 // toolkit 이 reducer
-const reducer = createReducer([], (builder) => {
-  builder
-    .addCase(addTodo, (state, action) => {
-      state.push({ todoTitle: action.payload, id: uuidv4() });
-    })
+// const reducer = createReducer([], (builder) => {
+//   builder
+//     .addCase(addTodo, (state, action) => {
+//       state.push({ todoTitle: action.payload, id: uuidv4() });
+//     })
 
-    .addCase(deleteTodo, (state, action) =>
-      state.filter((ToDo) => ToDo.id !== action.payload)
-    );
-});
+//     .addCase(deleteTodo, (state, action) =>
+//       state.filter((ToDo) => ToDo !== action.payload)
+//     );
+// });
 
-const todoStore = createStore(reducer);
+const slice = createSlice({
+  name: "toDosReducer",
+  initialState: [],
+  reducers: {
+    add(state, action) {
+       state.push({ todoTitle: action.payload, id: uuidv4() });
+    },
+    remove(state, action) {
+       state.filter((ToDo) => ToDo !== action.payload);
+    }
+  }
+},
+  
+)
 
-export const actionCreators = {
-  addTodo,
-  deleteTodo,
-};
+// const todoStore = createStore(reducer);
+const todoStore = configureStore({ reducer :slice.reducer}); //slice의 reducer를 export해서 store의 reducer로 다시 설정함
+
+//console.log(slice.actions)
+
+export const { add, remove } = slice.actions
+
 export default todoStore;
